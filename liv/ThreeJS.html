@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset = "utf-8">
+  <title>get started with three.js</title>
+</head>
+<body>
+
+  <script src="three.min.js"></script>
+  <script src="OrbitControls.js"></script>
+  <script>
+  var main = function (){
+//空間生成
+    var scene = new THREE.Scene();
+//カメラの設定
+    var width = 600;
+    var height = 400;
+    var fov = 60;
+    var aspect = width / height;
+    var near = 1;
+    var far = 1000;
+    var camera = new THREE.PerspectiveCamera( fov, aspect, near , far);
+        camera.position.set(50,50,50);
+        camera.lookAt(new THREE.Vector3(0,0,0));
+
+
+//カメラを自由に操作するためのオブジェクト作成
+        var camera_controls = new THREE.OrbitControls(camera);
+
+//レンダラーをDOM上に設置
+    var renderer = new THREE.WebGLRenderer();
+    renderer.setSize(width, height);
+    document.body.appendChild( renderer.domElement);
+
+//高原の追加
+    var directionalLight = new THREE.DirectionalLight( 0xffffff);
+    directionalLight.position.set( 0.5, 0.5, 0.5 );
+    scene.add(directionalLight);
+
+    var directionalLight2 = new THREE.DirectionalLight( 0xffffff);
+    directionalLight2.position.set( -0.5, -0.5, -0.5);
+    scene.add(directionalLight2);
+
+
+
+
+    var geometry = new THREE.CubeGeometry( 30, 30, 30);
+    var material = new THREE.MeshPhongMaterial( {color: 0xff0000 });
+    var mesh = new THREE.Mesh( geometry, material);
+    scene.add(mesh);
+
+    camera_controls.update();
+    renderer.render( scene, camera);
+    //アニメーションを作成
+
+    //angleに角度を入れてその角度変化
+    var angle = 0;
+    //アニメーションを行うためのレンダリングの繰り返し
+     (function renderLoop (){ //名前付き即時関数
+       requestAnimationFrame( renderLoop); //requestAnimationFrameで繰り返し呼び出し
+      angle++;
+      camera.position.set(
+        Math.cos(Math.PI/180 * angle)*100,    //Math.cos(x)は cos(x) の値
+        Math.sin(Math.PI/180 * angle)*100,    //上に同じ。
+        50
+  )
+  //物体を回転させる
+    // mesh.rotation.set(
+    //       0,
+    //       mesh.rotation.y + 0.1,
+    //       mesh.rotation.z + 0.1
+    //   )
+     camera_controls.update();    //自由にカメラを動かす
+       renderer.render(scene, camera);
+     })();
+  };
+
+  window.addEventListener('DOMContentLoaded',main,false);
+  </script>
+  </body>
+  </html>
