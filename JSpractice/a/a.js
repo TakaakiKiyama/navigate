@@ -187,7 +187,7 @@ var routes = {
     pointA:["stair","pointE","pointB","pointA"],
     pointB:["stair","pointE","pointB"],
     pointC:["stair","pointE","pointB","pointC"],
-    pointD:["stair","pointE","pointB","pointC","pointD","pointC","pointB"],
+    pointD:["stair","pointE","pointB","pointC","pointD"],
     pointF:["stair","pointE","pointB","pointC","pointF"]
   }
 }
@@ -226,7 +226,7 @@ var elevroutes = {
     pointA:["elev","pointE","pointB","pointA"],
     pointB:["elev","pointE","pointB"],
     pointC:["elev","pointE","pointB","pointC"],
-    pointD:["elev","pointE","pointB","pointC","pointD","pointC"],
+    pointD:["elev","pointE","pointB","pointC","pointD"],
     pointF:["elev","pointE","pointB","pointC","pointF"]
   }
 }
@@ -409,8 +409,8 @@ function move(currentPlace,goalPlace,wayofchange){        //案内を実際に�
   camerarot(positions[goalPlace[0]][goalRoute[0]],positions[goalPlace[0]][goalRoute[1]]);
 
 
-
-  if(typeof wayofchange2 === ""){
+  if(wayofchange2 === ""){
+    console.log("a");
     if(wayofchange == "stair"){           //階段を使うなら階段を移動
       for( var i=0 ; i<goalRoute.length-1 ; i++ ){     //ゴールまで
         changedir(positions[goalPlace[0]][goalRoute[i+1]],positions[goalPlace[0]][goalRoute[i]]);
@@ -418,8 +418,9 @@ function move(currentPlace,goalPlace,wayofchange){        //案内を実際に�
       }
     }else if ( wayofchange == "elev"){    //エレベータを使うなら。。。
       for(var i = 0; i < elevRoute.length -1 ; i++){
-        if(i>0)
-        changedir(positions[goalPlace[0]][elevRoute[i+1]],positions[goalPlace[0]][elevRoute[i]]);
+        if(i>0){
+          changedir(positions[goalPlace[0]][elevRoute[i+1]],positions[goalPlace[0]][elevRoute[i]]);
+        }
         moveTo(goalPlace[0],positions[goalPlace[0]][elevRoute[i+1]]);
       }
     }else if( wayofchange == "esca"){     //エスカレーターを使うなら。。。方向変換追加
@@ -435,6 +436,7 @@ function move(currentPlace,goalPlace,wayofchange){        //案内を実際に�
       }
     }
   }else if(wayofchange3 === ""){
+    console.log("cccc");
     for(var i = 1;goalPlace[0]>i;i++){
       if((wayofchange == "stair" && wayofchange2 == "elev" )||(wayofchange == "elev" && wayofchange2 == "stair")){
         if(elevRoute.length - goalRoute.length < 0){
@@ -465,9 +467,10 @@ function move(currentPlace,goalPlace,wayofchange){        //案内を実際に�
       }else if((wayofchange == "elev" && wayofchange2 == "esca" )||(wayofchange == "esca" && wayofchange2 == "elev")){
         if(elevRoute.length-goalRoute.length < 0){
           for(var i = 0; i < elevRoute.length -1 ; i++){
-            if(i>0)
-            changedir(positions[goalPlace[0]][elevRoute[i+1]],positions[goalPlace[0]][elevRoute[i]]);
-            moveTo(goalPlace[0],positions[goalPlace[0]][elevRoute[i+1]]);
+              if(i>0){
+                changedir(positions[goalPlace[0]][elevRoute[i+1]],positions[goalPlace[0]][elevRoute[i]]);
+              }
+                moveTo(goalPlace[0],positions[goalPlace[0]][elevRoute[i+1]]);
           }
         }else{
           for(var i = 0 ; i<escaRoute.length-1; i++){
@@ -479,6 +482,7 @@ function move(currentPlace,goalPlace,wayofchange){        //案内を実際に�
       }
     }
   }else{
+    console.log("else");
     if(escaRoute.length < goalRoute.length && escaRoute.length < elevRoute.length){
       for(var i = 0 ; i<escaRoute.length-1; i++){
         if(i>0)
@@ -491,6 +495,12 @@ function move(currentPlace,goalPlace,wayofchange){        //案内を実際に�
         moveTo(goalPlace[0],positions[goalPlace[0]][goalRoute[i+1]]);
       }
     }else if(elevRoute.length < escaRoute.length && elevRoute.length< goalRoute.length){
+      for(var i = 0; i < elevRoute.length -1 ; i++){
+        if(i>0)
+        changedir(positions[goalPlace[0]][elevRoute[i+1]],positions[goalPlace[0]][elevRoute[i]]);
+        moveTo(goalPlace[0],positions[goalPlace[0]][elevRoute[i+1]]);
+      }
+    }else {
       for(var i = 0; i < elevRoute.length -1 ; i++){
         if(i>0)
         changedir(positions[goalPlace[0]][elevRoute[i+1]],positions[goalPlace[0]][elevRoute[i]]);
