@@ -499,33 +499,6 @@ function move(currentPlace,goalPlace,wayofchange){        //案内を実際に�
     }
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   // if(wayofchange == "esca"){
   //   for(var i = 0 ; i<escaRoute.length-1; i++){
   //       if(i>0)
